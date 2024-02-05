@@ -1,25 +1,29 @@
-const API_KEY = "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"
+const API_KEY = "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"
+const submitButton = document.querySelector('#submit')
+const outPutElement = document.querySelector('#output')
 
-async function fetchData( ) {
-    const response = await fetch('http://api.openai.com/v1/chat/completions', {
+async function getMessage() {
+    console.log('clicked')
+    const options = {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${API_KEY}`,
-            "Content-Type": "application/json"
+            'Authorization': `Bearer ${API_KEY}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo-1106",
-            messages: [
-                {
-                    role: "user",
-                    content: "Hello"
-                }
-            ]
+            model: "gpt-3.5-turbo",
+            messages: [{role: "user", content: "Hello!"}],
+            max_tokens: 100
         })
-    })
-    const data = await response.json()
-    console.log(data)
+    }
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', options)
+        const data = await response.json()
+        console.log(data)
+        outPutElement.textContent = data.choices[0].message.content
+    } catch (error){
+    console.error(error)
+    }
 }
 
-
-fetchData()
+submitButton.addEventListener('click', getMessage)
