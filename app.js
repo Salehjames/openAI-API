@@ -1,4 +1,4 @@
-const API_KEY = "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"
+const API_KEY = "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"
 const submitButton = document.querySelector('#submit')
 const outPutElement = document.querySelector('#output')
 
@@ -20,8 +20,11 @@ async function getMessage() {
         const response = await fetch('https://api.openai.com/v1/chat/completions', options)
         const data = await response.json()
         console.log(data)
-        outPutElement.textContent = data.choices[0].message.content
-    } catch (error){
+        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+            outPutElement.textContent = data.choices[0].message.content
+        } else {
+            outPutElement.textContent = "No response from the AI."
+        }    } catch (error){
     console.error(error)
     }
 }
